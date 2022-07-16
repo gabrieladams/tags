@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- STYLES IMPORT -->
+    <link rel="stylesheet" href="./assets/css/output.css" />
+    <!-- FONTAWESOME IMPORT -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/solid.min.css"
+      integrity="sha512-qzgHTQ60z8RJitD5a28/c47in6WlHGuyRvMusdnuWWBB6fZ0DWG/KyfchGSBlLVeqAz+1LzNq+gGZkCSHnSd3g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- ALPINE.JS IMPORT -->
+    <script src="https://unpkg.com/alpinejs" defer></script>
+    <title>Tag Input</title>
+  </head>
+  <body
+    class="flex justify-center items-center p-5 md:p-0 min-h-screen bg-[#5372f0]"
+  >
+    <div
+      x-data="{
+        tag: '',
+        tags: [],
+        maxNumOfTags: 10,
+        errorMessage: ''
+     }"
+      class="rounded-[10px] pt-[18px] px-[25px] pb-5 w-full max-w-[490px] bg-white"
+    >
+      <div class="flex items-center">
+        <i class="fa-solid fa-tags text-[21px]"></i>
+        <h2 class="text-[21px] font-semibold ml-2">Tags</h2>
+      </div>
+
+      <div class="my-2.5">
+        <p class="mb-2 text-[15px]">
+          Press enter to add a tag.
+          <small class="block">
+            Enter a list of comma separated tag to add multiple tags at once.
+          </small>
+        </p>
+
+        <!-- ERROR MESSAGE OUTPUT -->
+        <small
+          x-text="errorMessage"
+          x-bind:class="errorMessage ? 'block' : 'hidden'"
+          class="text-red-500"
+        ></small>
+
+        <div>
+          <ul
+            class="flex flex-wrap border border-solid border-[#a6a6a6] rounded-[5px] my-3 mx-0 p-[7px]"
+          >
+            <template x-for="tag in tags">
+              <li
+                class="flex justify-center items-center border border-solid border-[#e3d1e1] rounded-[5px] my-1 mx-[3px] pt-[5px] pr-2 pb-[5px] pl-2.5 bg-[#f2f2f2]"
+              >
+                <span x-text="tag"></span>
+
+                <span
+                  x-on:click="tags = tags.filter((_tag) => {
+                    if(_tag !== tag) {
+                        return _tag;
+                    }
+                  })"
+                  class="flex justify-center items-center rounded-full ml-2 h-5 w-5 bg-[#dfdfdf] cursor-pointer"
+                >
+                  <i
+                    class="fa-solid fa-xmark text-xs leading-normal text-[#808080]"
+                  ></i>
+                </span>
+              </li>
+            </template>
+
+            <input
+              x-model="tag"
+              x-on:keyup="function(e) { 
+                
+                if(tag.indexOf(',') === 0) {
+                    errorMessage = 'Tags cannot start with a comma';
+                } else {
+                    errorMessage = '';
+
+                    if(e.key === 'Enter') {
+                        tag = tag.replace(/\s+/g, ' ');
+    
+            
+                        if(tags.includes(tag)){
+                            errorMessage = 'Tag already exist'
+                        } else {
+                            errorMessage = ''
+                        }
+    
+                        if(tag.length > 1 && !tags.includes(tag)) {
+                            if(tags.length < 10) {
+                                tag.split(',').forEach((tag) => {
+                                    tags.push(tag);
+                                });
+
+                                tags = tags.filter((tag) => {
+                                    if(tag !== '') {
+                                        return tag
+                                    }
+                                })
+                            }
+                        }
+    
+                        tag = ''
+                    }
+                }
+
+                  
+            }"
+              class="grow outline-none border-none p-[5px] text-base"
+              type="text"
+            />
+          </ul>
+        </div>
+      </div>
+      <div class="flex justify-between items-center">
+        <p>
+          <span x-text="maxNumOfTags - tags.length"></span> tags are remaining
+        </p>
+
+        <!-- JUST IN CASE YOU NEED IT -->
+        <!-- <button
+          x-on:click="tags = []"
+          class="outline-none border-none rounded-[5px] py-[9px] px-[15px] font-sm leading-normal text-white bg-[#5372f0]"
+        >
+          Remove All
+        </button> -->
+      </div>
+    </div>
+  </body>
+</html>
