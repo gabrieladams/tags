@@ -9,8 +9,8 @@
     <!-- FONTAWESOME IMPORT -->
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/solid.min.css"
-      integrity="sha512-qzgHTQ60z8RJitD5a28/c47in6WlHGuyRvMusdnuWWBB6fZ0DWG/KyfchGSBlLVeqAz+1LzNq+gGZkCSHnSd3g=="
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
@@ -26,7 +26,7 @@
         tag: '',
         tags: [],
         maxNumOfTags: 10,
-        errorMessage: ''
+        errorMessage: '',
      }"
       class="rounded-[10px] pt-[18px] px-[25px] pb-5 w-full max-w-[490px] bg-white"
     >
@@ -36,12 +36,7 @@
       </div>
 
       <div class="my-2.5">
-        <p class="mb-2 text-[15px]">
-          Press enter to add a tag.
-          <small class="block">
-            Enter a list of comma separated tag to add multiple tags at once.
-          </small>
-        </p>
+        <p class="mb-2 text-[15px]">Press enter or comma to add a tag.</p>
 
         <!-- ERROR MESSAGE OUTPUT -->
         <small
@@ -52,6 +47,7 @@
 
         <div>
           <ul
+            x-on:click="$refs.tagInput.focus()"
             class="flex flex-wrap border border-solid border-[#a6a6a6] rounded-[5px] my-3 mx-0 p-[7px]"
           >
             <template x-for="tag in tags">
@@ -76,17 +72,16 @@
             </template>
 
             <input
+              x-ref="tagInput"
               x-model="tag"
               x-on:keyup="function(e) { 
-                
                 if(tag.indexOf(',') === 0) {
                     errorMessage = 'Tags cannot start with a comma';
                 } else {
                     errorMessage = '';
 
-                    if(e.key === 'Enter') {
+                    if(e.key === 'Enter' || e.key === ',') {
                         tag = tag.replace(/\s+/g, ' ');
-    
             
                         if(tags.includes(tag)){
                             errorMessage = 'Tag already exist'
@@ -110,11 +105,9 @@
     
                         tag = ''
                     }
-                }
-
-                  
+                } 
             }"
-              class="grow outline-none border-none p-[5px] text-base"
+              class="outline-none border-none p-[5px] w-[150px] text-base"
               type="text"
             />
           </ul>
