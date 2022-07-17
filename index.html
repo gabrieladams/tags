@@ -45,36 +45,35 @@
           class="text-red-500"
         ></small>
 
-        <div>
-          <ul
-            x-on:click="$refs.tagInput.focus()"
-            class="flex flex-wrap border border-solid border-[#a6a6a6] rounded-[5px] my-3 mx-0 p-[7px]"
-          >
-            <template x-for="tag in tags">
-              <li
-                class="flex justify-center items-center border border-solid border-[#e3d1e1] rounded-[5px] my-1 mx-[3px] pt-[5px] pr-2 pb-[5px] pl-2.5 bg-[#f2f2f2]"
-              >
-                <span x-text="tag"></span>
+        <div
+          x-on:click="$refs.tagInput.focus()"
+          class="flex flex-wrap border border-solid border-[#a6a6a6] rounded-[5px] my-3 mx-0 p-[7px] min-h-[60px]"
+        >
+          <template x-for="tag in tags">
+            <div
+              class="flex justify-center items-center border border-solid border-[#e3d1e1] rounded-[5px] my-1 mx-[3px] pt-[5px] pr-2 pb-[5px] pl-2.5 bg-[#f2f2f2]"
+            >
+              <span x-text="tag"></span>
 
-                <span
-                  x-on:click="tags = tags.filter((_tag) => {
+              <span
+                x-on:click="tags = tags.filter((_tag) => {
                     if(_tag !== tag) {
                         return _tag;
                     }
                   })"
-                  class="flex justify-center items-center rounded-full ml-2 h-5 w-5 bg-[#dfdfdf] cursor-pointer"
-                >
-                  <i
-                    class="fa-solid fa-xmark text-xs leading-normal text-[#808080]"
-                  ></i>
-                </span>
-              </li>
-            </template>
+                class="flex justify-center items-center rounded-full ml-2 h-5 w-5 bg-[#dfdfdf] cursor-pointer"
+              >
+                <i
+                  class="fa-solid fa-xmark text-xs leading-normal text-[#808080]"
+                ></i>
+              </span>
+            </div>
+          </template>
 
-            <input
-              x-ref="tagInput"
-              x-model="tag"
-              x-on:keyup="function(e) { 
+          <input
+            x-ref="tagInput"
+            x-model="tag"
+            x-on:keyup="function(e) { 
                 if(tag.indexOf(',') === 0) {
                     errorMessage = 'Tags cannot start with a comma';
                 } else {
@@ -107,10 +106,9 @@
                     }
                 } 
             }"
-              class="outline-none border-none p-[5px] w-[150px] text-base"
-              type="text"
-            />
-          </ul>
+            class="grow outline-none border-none p-[5px] text-base"
+            type="text"
+          />
         </div>
       </div>
       <div class="flex justify-between items-center">
